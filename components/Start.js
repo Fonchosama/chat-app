@@ -9,9 +9,17 @@ import {
   ImageBackground,
 } from 'react-native';
 
+// Firebase import
+import { signInAnonymously } from 'firebase/auth';
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+
 const Start = ({ navigation }) => {
   const [name, setName] = useState('');
   const [bgColor, setBgColor] = useState('#FFFFFF');
+  const auth = getAuth(); // get the authporization
+
   const colorStyles = [
     { color: '#090C08', styleKey: 'black' },
     { color: '#474056', styleKey: 'darkGray' },
@@ -19,12 +27,22 @@ const Start = ({ navigation }) => {
     { color: '#B9C6AE', styleKey: 'lightGreen' },
   ]; // colors for the buttons
 
-  const handleEnterChat = () => {
-    if (name.trim()) {
-      navigation.navigate('Chat', { userName: name, bgColor });
-    } else {
-      alert('Please write your name');
+  const handleSignIn = () => {
+    if (!name.trim()) {
+      alert('Please enter your name');
+      return;
     }
+
+    signInAnonymously(auth) // 🔹 annonymous auth
+      .then((userCredential) => {
+        const user = userCredential.user;
+        navigation.navigate('Chat', {
+          userId: user.uid,
+          userName: name,
+          bgColor: bgColor,
+        });
+      })
+      .catch((error) => console.error('Error signing in:', error));
   };
 
   return (
@@ -58,7 +76,7 @@ const Start = ({ navigation }) => {
               ))}
             </View>
           </View>
-          <TouchableOpacity style={styles.button} onPress={handleEnterChat}>
+          <TouchableOpacity style={styles.button} onPress={handleSignIn}>
             <Text style={styles.buttonText}>Start Chatting</Text>
           </TouchableOpacity>
         </View>

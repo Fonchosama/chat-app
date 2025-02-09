@@ -5,7 +5,28 @@ import Start from './components/Start';
 import Chat from './components/Chat';
 import 'react-native-gesture-handler';
 
+//create navigator
 const Stack = createStackNavigator();
+
+//start firebas & firestone
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+
+// chat-app Firebase configuration
+const firebaseConfig = {
+  apiKey: 'AIzaSyDo9gvgyv61m5ip4SrJPAqUUeW9xjHqS_U',
+  authDomain: 'chat-app-e3cb8.firebaseapp.com',
+  projectId: 'chat-app-e3cb8',
+  storageBucket: 'chat-app-e3cb8.firebasestorage.app',
+  messagingSenderId: '636563977439',
+  appId: '1:636563977439:web:fec85b240350bb199a256a',
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
 
 const App = () => {
   return (
