@@ -20,7 +20,7 @@ const firebaseConfig = {
   projectId: 'chat-app-e3cb8',
   storageBucket: 'chat-app-e3cb8.firebasestorage.app',
   messagingSenderId: '636563977439',
-  appId: '1:636563977439:web:fec85b240350bb199a256a',
+  appId: '1:636563977439:web:e194f690348eb9c79a256a',
 };
 
 // Initialize Firebase
