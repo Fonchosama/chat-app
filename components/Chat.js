@@ -21,6 +21,7 @@ import {
 } from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
 import { useNetInfo } from '@react-native-community/netinfo'; // Import for network info
+import CustomActions from './CustomActions'; //import custom actions
 
 const Chat = ({ route, navigation }) => {
   const { userName, bgColor, name, userId } = route.params;
@@ -110,6 +111,10 @@ const Chat = ({ route, navigation }) => {
     navigation.setOptions({ title: name });
   }, [name, navigation]);
 
+  const renderCustomActions = (props) => {
+    return <CustomActions {...props} />;
+  };
+
   return (
     <View style={[styles.container, { backgroundColor: bgColor }]}>
       <Text style={styles.header}>Welcome to the chat, {userName}!</Text>
@@ -130,6 +135,7 @@ const Chat = ({ route, navigation }) => {
           name: userName,
         }}
         renderInputToolbar={renderInputToolbar} // Use custom InputToolbar render
+        renderActions={renderCustomActions}
         style={{ marginTop: 1000 }}
       />
       {Platform.OS === 'android' ? (
