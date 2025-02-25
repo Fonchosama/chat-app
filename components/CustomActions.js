@@ -1,10 +1,12 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import * as Location from 'expo-location';
 import * as ImagePicker from 'expo-image-picker';
 
-const CustomActions = ({ wrapperStyle, iconTextStyle }) => {
+const CustomActions = ({ wrapperStyle, iconTextStyle, onSend, user }) => {
   const actionSheet = useActionSheet();
+  console.log('onSend', onSend, user);
+
   const onActionPress = () => {
     const options = [
       'Choose From Library',
@@ -32,6 +34,33 @@ const CustomActions = ({ wrapperStyle, iconTextStyle }) => {
         }
       }
     );
+  };
+
+  const takePhoto = () => {
+    Alert.alert('Coming soon!!!');
+  };
+
+  const pickImage = () => {
+    Alert.alert('Coming soon!!!');
+  };
+
+  // Get the Co-ords
+  const getLocation = async () => {
+    let permissions = await Location.requestForegroundPermissionsAsync();
+
+    if (permissions?.granted) {
+      const location = await Location.getCurrentPositionAsync({});
+      if (location) {
+        onSend({
+          _id: `${new Date().getTime()}-${user.userId}`,
+          user: { _id: user.userId, name: user.userName },
+          location: {
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+          },
+        });
+      } else Alert.alert('Error occurred while fetching location');
+    } else Alert.alert("Permissions haven't been granted.");
   };
 
   return (

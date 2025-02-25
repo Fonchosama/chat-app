@@ -22,6 +22,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
 import { useNetInfo } from '@react-native-community/netinfo'; // Import for network info
 import CustomActions from './CustomActions'; //import custom actions
+import MapView from 'react-native-maps';
 
 const Chat = ({ route, navigation }) => {
   const { userName, bgColor, name, userId } = route.params;
@@ -54,7 +55,8 @@ const Chat = ({ route, navigation }) => {
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
           const newMessages = querySnapshot.docs.map((doc) => ({
             _id: doc.id,
-            text: doc.data().text,
+            text: doc.data().text || null,
+            location: doc.data().location || null,
             createdAt: doc.data().createdAt.toDate(),
             user: doc.data().user,
           }));
@@ -78,7 +80,6 @@ const Chat = ({ route, navigation }) => {
 
   const onSend = (newMessages) => {
     const message = newMessages[0];
-    const { text, user } = message;
 
     // Update state immediately when a new message is sent (for better UX)
     setMessages((previousMessages) =>
@@ -88,9 +89,10 @@ const Chat = ({ route, navigation }) => {
     // Add new message to Firestore
     if (connectionStatus.isConnected) {
       addDoc(collection(db, 'messages'), {
-        text,
+        text: message.text || '',
+        location: message.location || null,
         createdAt: Timestamp.fromDate(new Date()),
-        user,
+        user: message.user,
       });
     } else {
       // Handle offline message sending (if desired, store in AsyncStorage as well)
@@ -112,7 +114,32 @@ const Chat = ({ route, navigation }) => {
   }, [name, navigation]);
 
   const renderCustomActions = (props) => {
-    return <CustomActions {...props} />;
+    console.log(props);
+    return (
+      <CustomActions
+        onSend={(msg) => onSend([msg])}
+        user={{ userId, userName }}
+        {...props}
+      />
+    );
+  };
+
+  const renderCustomView = (props) => {
+    const { currentMessage } = props;
+    if (currentMessage.location) {
+      return (
+        <MapView
+          style={{ width: 150, height: 100, borderRadius: 15, margin: 3 }}
+          region={{
+            latitude: currentMessage.location.latitude,
+            longitude: currentMessage.location.longitude,
+            latitudeDelta: 0.0922, // zoom level
+            longitudeDelta: 0.0421,
+          }}
+        />
+      );
+    }
+    return null;
   };
 
   return (
@@ -129,6 +156,7 @@ const Chat = ({ route, navigation }) => {
             }}
           />
         )}
+        renderCustomView={renderCustomView}
         onSend={onSend}
         user={{
           _id: userId,
