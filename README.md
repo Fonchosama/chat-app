@@ -42,6 +42,7 @@ Expo Location
 Google Firestore/Firebase
 Gifted Chat Library
 Android Studio
+
 Dependencies:
 "@react-navigation/native": "^7.0.14",
 "@react-navigation/native-stack": "^7.2.0",
@@ -70,3 +71,43 @@ npx expo start
 Testing Options
 download and connect the expo app on your mobile device
 Android Studio (android)
+
+Follow these steps to set up the project locally:
+
+1. Clone the Repository
+   git clone https://github.com/your-username/chat-app.git
+
+cd chat-app
+
+2. Use Node.js Version 18
+   Ensure you have Node.js v18 installed. If you use nvm, switch to Node 18 with:
+
+nvm use 18
+
+If you don't have nvm, install Node.js v18 from Node.js website.
+
+3. Install Dependencies
+   Install necessary dependencies by running:
+
+npm install
+
+4. Install Expo CLI
+   If you don't already have the Expo CLI globally, install it using:
+
+npm install -g expo-cli
+
+5. Configure Firebase
+   Go to the Firebase console.
+   Create a new Firebase project.
+   Enable Firestore and Firebase Storage:
+   In Firestore and Storage, set the rules as follows during development:
+   '{ "rules": { ".read": "auth != null", ".write": "auth != null" } }'
+
+Add a web app to your project and copy the config.
+Add the Firebase config to your project in the firebaseConfig object in App.js:
+'const firebaseConfig = { apiKey: "YOUR_API_KEY", authDomain: "YOUR_AUTH_DOMAIN", projectId: "YOUR_PROJECT_ID", storageBucket: "YOUR_STORAGE_BUCKET", messagingSenderId: "YOUR_MESSAGING_SENDER_ID", appId: "YOUR_APP_ID" };'
+
+6. Run the App Locally
+   Start the development server using:
+
+npm run start
