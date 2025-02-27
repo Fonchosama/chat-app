@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
     marginBottom: 20,
+    borderRadius: 15,
   },
   header: {
     flex: 1,
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     backgroundColor: '#757083',
-    borderRadius: 4,
+    borderRadius: 40,
     height: '20%',
     justifyContent: 'center',
     padding: 10,
