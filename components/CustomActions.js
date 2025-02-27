@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   wrapper: {
-    borderRadius: 13,
+    borderRadius: 30,
     borderColor: '#b2b2b2',
     borderWidth: 2,
     flex: 1,
@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
     color: '#b2b2b2',
     fontWeight: 'bold',
     fontSize: 10,
+    borderRadius: 30,
     backgroundColor: 'transparent',
     textAlign: 'center',
   },
